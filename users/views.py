@@ -2,7 +2,7 @@ from rest_framework import viewsets
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from .models import User, Profile
-from .serializers import UserSerializer, ProfileSerializer
+from .serializers import UserSerializer, ProfileSerializer, CustomTokenObtainPairSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
