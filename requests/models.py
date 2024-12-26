@@ -1,22 +1,33 @@
 from django.db import models
 from students.models import Student
 
+
 class MaintenanceRequest(models.Model):
     STATUS_CHOICES = (
         ('ppk_done', 'PPK Done'),
         ('rejected', 'Rejected'),
     )
 
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='maintenance_requests')
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+    )
+
+    student_id = models.CharField(max_length=20, default='')
+    phone = models.CharField(max_length=15, default='')
+    email = models.EmailField(default='')
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
+    nationality = models.CharField(max_length=50, default='')
     room_number = models.CharField(max_length=10)
     issue = models.CharField(max_length=255)
     occurrence = models.CharField(max_length=255)
-    evidence_photo = models.ImageField(upload_to='maintenance_evidence/')
+    evidence_photo = models.FileField(upload_to='maintenance_evidence/')
     explanation = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
 
     def __str__(self):
-        return f'Request by {self.student.name}'
+        return f'Request by {self.student_id}'
+
 
 class ChangeRoomRequest(models.Model):
     STATUS_CHOICES = (
