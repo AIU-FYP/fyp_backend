@@ -1,5 +1,8 @@
 from django.db import models
 
+from hostels.models import Room
+
+
 class Student(models.Model):
     GENDER_CHOICES = (
         ('male', 'Male'),
@@ -17,6 +20,7 @@ class Student(models.Model):
     nationality = models.CharField(max_length=50)
     major = models.CharField(max_length=100)
     room_zone = models.CharField(max_length=100)
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, default=1)
 
     def __str__(self):
         return self.name
