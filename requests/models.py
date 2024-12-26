@@ -36,11 +36,20 @@ class ChangeRoomRequest(models.Model):
         ('rejected', 'Rejected'),
     )
 
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='change_room_requests')
+    GENDER_CHOICES = (
+        ('male', 'Male'),
+        ('female', 'Female'),
+    )
+
+    student_id = models.CharField(max_length=20, default='')
+    phone = models.CharField(max_length=15, default='')
+    email = models.EmailField(default='')
+    gender = models.CharField(max_length=10, choices=GENDER_CHOICES, default='male')
+    nationality = models.CharField(max_length=50, default='')
     room_number = models.CharField(max_length=10)
     supporting_doc = models.FileField(upload_to='change_room_docs/')
     reason = models.TextField()
     status = models.CharField(max_length=20, choices=STATUS_CHOICES)
 
     def __str__(self):
-        return f'Change Room Request by {self.student.name}'
+        return f'Change Room Request by {self.student_id}'
