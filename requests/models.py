@@ -4,6 +4,7 @@ from students.models import Student
 
 class MaintenanceRequest(models.Model):
     STATUS_CHOICES = (
+        ('appending', 'Appending'),
         ('ppk_done', 'PPK Done'),
         ('rejected', 'Rejected'),
     )
@@ -21,9 +22,9 @@ class MaintenanceRequest(models.Model):
     room_number = models.CharField(max_length=10)
     issue = models.CharField(max_length=255)
     occurrence = models.CharField(max_length=255)
-    evidence_photo = models.FileField(upload_to='maintenance_evidence/')
+    evidence_photo = models.FileField(upload_to='maintenance_evidence/', default='null')
     explanation = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='appending')
 
     def __str__(self):
         return f'Request by {self.student_id}'
