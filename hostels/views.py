@@ -6,6 +6,12 @@ class HostelViewSet(viewsets.ModelViewSet):
     queryset = Hostel.objects.all()
     serializer_class = HostelSerializer
 
+    def get_queryset(self):
+        return Hostel.objects.prefetch_related(
+            'levels',
+            'levels__rooms'
+        )
+
 class LevelViewSet(viewsets.ModelViewSet):
     queryset = Level.objects.all()
     serializer_class = LevelSerializer
