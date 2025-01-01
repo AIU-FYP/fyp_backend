@@ -9,6 +9,13 @@ class Student(models.Model):
         ('female', 'Female'),
     )
 
+    STATUS_CHOICES = (
+        ('active', 'Active'),
+        ('non_active', 'Non Active'),
+        ('terminated', 'Terminated'),
+        ('graduate', 'Graduate'),
+    )
+
     name = models.CharField(max_length=100)
     student_id = models.CharField(max_length=20, unique=True)
     passport = models.CharField(max_length= 50, default = '')
@@ -21,6 +28,7 @@ class Student(models.Model):
     major = models.CharField(max_length=100)
     room_zone = models.CharField(max_length=100)
     room = models.ForeignKey(Room, on_delete=models.CASCADE, default=1)
+    status = models.CharField( max_length=20, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
         return self.name
