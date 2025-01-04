@@ -52,7 +52,7 @@ class ChangeRoomRequest(models.Model):
     room_number = models.CharField(max_length=10)
     supporting_doc = models.FileField(upload_to='change_room_docs/')
     reason = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES , default = 'appending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES , default = 'pending')
 
     def __str__(self):
         return f'Change Room Request by {self.student_id}'
