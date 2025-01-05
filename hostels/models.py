@@ -38,3 +38,5 @@ class Bed(models.Model):
     status = models.CharField(max_length=20, choices=ROOM_STATUS_CHOICES, default='available')
     bed_number = models.CharField(max_length=10 , default='')
 
+    def __str__(self):
+        return f'Bed {self.bed_number}'
