@@ -136,6 +136,13 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
+SENDGRID_API_KEY = 'your-sendgrid-api-key'
+EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
+DEFAULT_FROM_EMAIL = 'your-verified-sender@yourdomain.com'
+
+STAFF_EMAIL = 'student_affairs@yourdomain.com'
+PPK_EMAIL = 'ppk@yourdomain.com'
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
 
