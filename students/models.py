@@ -12,6 +12,8 @@ class Student(models.Model):
     STATUS_CHOICES = (
         ('active', 'Active'),
         ('inactive', 'Inactive'),
+        ('graduated', 'Graduated'),
+        ('terminated', 'Terminated')
     )
 
     name = models.CharField(max_length=100)
