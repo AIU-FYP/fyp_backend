@@ -6,7 +6,7 @@ from rest_framework.routers import DefaultRouter
 
 from users.views import UserViewSet, ProfileViewSet, CustomTokenObtainPairView
 from students.views import StudentViewSet
-from hostels.views import HostelViewSet, LevelViewSet, RoomViewSet
+from hostels.views import HostelViewSet, LevelViewSet, RoomViewSet, BedViewSet
 from requests.views import MaintenanceRequestViewSet, ChangeRoomRequestViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
@@ -20,6 +20,7 @@ router.register(r'students', StudentViewSet)
 router.register(r'hostels', HostelViewSet)
 router.register(r'levels', LevelViewSet)
 router.register(r'rooms', RoomViewSet)
+router.register(r'beds', BedViewSet, basename='bed')
 router.register(r'maintenance-requests', MaintenanceRequestViewSet)
 router.register(r'change-room-requests', ChangeRoomRequestViewSet)
 

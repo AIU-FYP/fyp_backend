@@ -26,3 +26,18 @@ class Room(models.Model):
 
     def __str__(self):
         return f'Room {self.number} (Level {self.level.number})'
+
+    def __str__(self):
+            return f'Room {self.number} (Level {self.level.number})'
+
+class Bed(models.Model):
+    ROOM_STATUS_CHOICES = (
+        ('available', 'Available'),
+        ('occupied', 'Occupied'),
+        ('under_maintenance', 'Under Maintenance'),
+    )
+
+    room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='beds')
+    status = models.CharField(max_length=20, choices=ROOM_STATUS_CHOICES, default='available')
+    bed_number = models.CharField(max_length=10 , default='')
+

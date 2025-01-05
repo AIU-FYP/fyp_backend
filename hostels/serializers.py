@@ -7,17 +7,23 @@ class BedSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Bed
-        fields = ['id', 'status']
+        fields = ['id', 'status', 'bed_number']
+
+    def update(self, instance, validated_data):
+            instance.status = validated_data.get('status', instance.status)
+            instance.save()
+            return instance
 
 class RoomSerializer(serializers.ModelSerializer):
-    beds = BedSerializer(many=True, read_only=True)  # Output beds in room
+    beds = BedSerializer(many=True, read_only=True)
     class Meta:
+
         model = Room
         fields = ['number', 'capacity', 'beds']
 
 class LevelSerializer(serializers.ModelSerializer):
-    rooms = serializers.IntegerField(write_only=True)  # For input
-    room_details = RoomSerializer(source='rooms', many=True, read_only=True)  # For output
+    rooms = serializers.IntegerField(write_only=True)
+    room_details = RoomSerializer(source='rooms', many=True, read_only=True)
 
     class Meta:
         model = Level
@@ -33,27 +39,25 @@ class HostelSerializer(serializers.ModelSerializer):
 
     def create(self, validated_data):
         levels_data = validated_data.pop('levels')
-        capacity = validated_data.pop('capacity')  # Get the capacity
+        capacity = validated_data.pop('capacity')
         hostel = Hostel.objects.create(**validated_data)
 
         for level_data in levels_data:
-            num_rooms = level_data.pop('rooms')  # Get number of rooms needed
+            num_rooms = level_data.pop('rooms')
             level = Level.objects.create(hostel=hostel, **level_data)
 
-            # Create rooms and beds
             for room_number in range(1, num_rooms + 1):
                 room = Room.objects.create(
                     level=level,
-                    number=str(room_number).zfill(2),  # Pad with zeros, e.g., "01", "02"
+                    number=str(room_number).zfill(2),
                     capacity=capacity
                 )
 
-                # Create beds for each room
-                for bed_number in range(1, capacity + 1):  # Create beds based on room's capacity
+                for bed_number in range(1, capacity + 1):
                     Bed.objects.create(
                         room=room,
-                        bed_number=str(bed_number).zfill(2),  # Bed ID format like "01", "02", etc.
-                        status='available'  # Set status as 'available' by default
+                        bed_number=str(bed_number).zfill(2),
+                        status='available'
                     )
 
         return hostel
