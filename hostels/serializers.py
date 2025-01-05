@@ -2,6 +2,7 @@ from rest_framework import serializers
 from .models import Hostel, Level, Room, Bed
 
 class BedSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source='current_status', read_only=True)
     class Meta:
         model = Bed
         fields = ['id', 'status', 'bed_number']

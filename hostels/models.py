@@ -1,5 +1,8 @@
 from django.db import models
 
+from django.apps import apps
+
+
 class Hostel(models.Model):
     GENDER_CHOICES = (
         ('male', 'Male'),
@@ -12,12 +15,14 @@ class Hostel(models.Model):
     def __str__(self):
         return self.name
 
+
 class Level(models.Model):
     hostel = models.ForeignKey(Hostel, on_delete=models.CASCADE, related_name='levels')
     number = models.IntegerField()
 
     def __str__(self):
         return f'{self.hostel.name} - Level {self.number}'
+
 
 class Room(models.Model):
     level = models.ForeignKey(Level, on_delete=models.CASCADE, related_name='rooms')
@@ -26,6 +31,7 @@ class Room(models.Model):
 
     def __str__(self):
         return f'Room {self.number} (Level {self.level.number})'
+
 
 class Bed(models.Model):
     ROOM_STATUS_CHOICES = (
@@ -36,7 +42,27 @@ class Bed(models.Model):
 
     room = models.ForeignKey(Room, on_delete=models.CASCADE, related_name='beds')
     status = models.CharField(max_length=20, choices=ROOM_STATUS_CHOICES, default='available')
-    bed_number = models.CharField(max_length=10 , default='')
+    bed_number = models.CharField(max_length=10, default='')
+
+    @property
+    def current_status(self):
+        Student = apps.get_model('students', 'Student')
+
+        has_active_student = Student.objects.filter(
+            bed=self,
+            status='active'
+        ).exists()
+
+        if has_active_student:
+            return 'occupied'
+        elif self.status == 'under_maintenance':
+            return 'under_maintenance'
+        else:
+            return 'available'
+
+    def save(self, *args, **kwargs):
+        self.status = self.current_status
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f'Bed {self.bed_number}'
