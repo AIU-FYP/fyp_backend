@@ -5,4 +5,7 @@ djangorestframework==3.15.2
 djangorestframework-simplejwt==5.3.1
 pillow==11.0.0
 PyJWT==2.10.1
+python-http-client==3.3.7
+sendgrid==3.6.5
+sendgrid-django==4.2.0
 sqlparse==0.5.3
