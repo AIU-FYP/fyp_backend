@@ -27,9 +27,6 @@ class Room(models.Model):
     def __str__(self):
         return f'Room {self.number} (Level {self.level.number})'
 
-    def __str__(self):
-            return f'Room {self.number} (Level {self.level.number})'
-
 class Bed(models.Model):
     ROOM_STATUS_CHOICES = (
         ('available', 'Available'),
