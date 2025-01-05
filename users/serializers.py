@@ -4,6 +4,17 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from .models import User, Profile
 
 
+class ChangePasswordSerializer(serializers.Serializer):
+    old_password = serializers.CharField(required=True)
+    new_password = serializers.CharField(required=True)
+    confirm_password = serializers.CharField(required=True)
+
+    def validate(self, attrs):
+        if attrs['new_password'] != attrs['confirm_password']:
+            raise serializers.ValidationError({"error": "New passwords don't match"})
+        return attrs
+
+
 class ProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = Profile
