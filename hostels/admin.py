@@ -1,3 +1,8 @@
 from django.contrib import admin
 
-# Register your models here.
+from hostels.models import Hostel, Level, Room, Bed
+
+models = [Hostel, Level, Room, Bed]
+
+for model in models:
+    admin.site.register(model)

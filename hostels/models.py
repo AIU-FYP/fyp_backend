@@ -33,7 +33,7 @@ class Room(models.Model):
 class Bed(models.Model):
     ROOM_STATUS_CHOICES = (
         ('available', 'Available'),
-        ('occupied', 'Occupied'),
+        ('occupiedd', 'Occupied'),
         ('under_maintenance', 'Under Maintenance'),
     )
 

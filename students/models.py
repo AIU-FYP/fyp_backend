@@ -1,6 +1,6 @@
 from django.db import models
 
-from hostels.models import Room
+from hostels.models import Room, Bed
 
 
 class Student(models.Model):
@@ -24,8 +24,7 @@ class Student(models.Model):
     religion = models.CharField(max_length=50)
     nationality = models.CharField(max_length=50)
     major = models.CharField(max_length=100)
-    room_zone = models.CharField(max_length=100)
-    room = models.ForeignKey(Room, on_delete=models.CASCADE, default=1)
+    bed = models.ForeignKey(Bed, on_delete=models.CASCADE, null=True, blank=True)
     status = models.CharField( max_length=20, choices=STATUS_CHOICES, default='active')
 
     def __str__(self):
