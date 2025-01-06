@@ -39,6 +39,10 @@ class HostelViewSet(viewsets.ModelViewSet):
         maintenance_requests = MaintenanceRequest.objects.count()
         change_room_requests = ChangeRoomRequest.objects.count()
 
+        # Total rooms and hostels statistics
+        total_hostels = Hostel.objects.count()
+        total_rooms = Room.objects.count()
+
         stats = {
             'student_statistics': {
                 'male_students': student_stats['total_male'],
@@ -55,6 +59,10 @@ class HostelViewSet(viewsets.ModelViewSet):
                 'maintenance_requests': maintenance_requests,
                 'change_room_requests': change_room_requests,
                 'total_requests': maintenance_requests + change_room_requests
+            },
+            'hostel_statistics': {
+                'total_hostels': total_hostels,
+                'total_rooms': total_rooms
             }
         }
 
