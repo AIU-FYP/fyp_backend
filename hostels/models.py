@@ -46,23 +46,19 @@ class Bed(models.Model):
 
     @property
     def current_status(self):
-        Student = apps.get_model('students', 'Student')
+        if self.id:
+            Student = apps.get_model('students', 'Student')
+            has_active_student = Student.objects.filter(
+                bed=self,
+                status='active'
+            ).exists()
 
-        has_active_student = Student.objects.filter(
-            bed=self,
-            status='active'
-        ).exists()
+            if has_active_student:
+                return 'occupied'
+            elif self.status == 'under_maintenance':
+                return 'under_maintenance'
 
-        if has_active_student:
-            return 'occupied'
-        elif self.status == 'under_maintenance':
-            return 'under_maintenance'
-        else:
-            return 'available'
-
-    def save(self, *args, **kwargs):
-        self.status = self.current_status
-        super().save(*args, **kwargs)
+        return 'available'
 
     def __str__(self):
         return f'Bed {self.bed_number}'
