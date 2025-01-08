@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .models import Hostel, Level, Room, Bed
 
 
-class BedSerializer(serializers.ModelSerializer):
+class SimpleBedSerializer(serializers.ModelSerializer):
     status = serializers.CharField(source='current_status', read_only=True)
 
     class Meta:
@@ -10,8 +10,32 @@ class BedSerializer(serializers.ModelSerializer):
         fields = ['id', 'status', 'bed_number']
 
 
+class BedSerializer(serializers.ModelSerializer):
+    status = serializers.CharField(source='current_status', read_only=True)
+    room_id = serializers.IntegerField(source='room.id', read_only=True)
+    room_number = serializers.CharField(source='room.number', read_only=True)
+    level_id = serializers.IntegerField(source='room.level.id', read_only=True)
+    level_number = serializers.IntegerField(source='room.level.number', read_only=True)
+    hostel_id = serializers.IntegerField(source='room.level.hostel.id', read_only=True)
+    hostel_name = serializers.CharField(source='room.level.hostel.name', read_only=True)
+
+    class Meta:
+        model = Bed
+        fields = [
+            'id',
+            'status',
+            'bed_number',
+            'room_id',
+            'room_number',
+            'level_id',
+            'level_number',
+            'hostel_id',
+            'hostel_name',
+        ]
+
+
 class RoomSerializer(serializers.ModelSerializer):
-    beds = BedSerializer(many=True, read_only=True)
+    beds = SimpleBedSerializer(many=True, read_only=True)
 
     class Meta:
         model = Room
