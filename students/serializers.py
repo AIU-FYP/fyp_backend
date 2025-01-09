@@ -1,11 +1,11 @@
 from rest_framework import serializers
 
-from hostels.serializers import BedSerializer
+from hostels.serializers import BedSerializer, SimpleBedSerializer
 from .models import Student
 
 
 class StudentSerializer(serializers.ModelSerializer):
-    # Add all the bed-related fields directly to the student serializer
+    bed = SimpleBedSerializer()
     bed_id = serializers.IntegerField(source='bed.id', read_only=True)
     bed_number = serializers.CharField(source='bed.bed_number', read_only=True)
     bed_status = serializers.CharField(source='bed.current_status', read_only=True)
@@ -31,6 +31,7 @@ class StudentSerializer(serializers.ModelSerializer):
             'nationality',
             'major',
             'status',
+            'bed',
             'bed_id',
             'bed_number',
             'bed_status',
