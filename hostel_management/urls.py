@@ -16,7 +16,7 @@ from rest_framework_simplejwt.views import (
 router = DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'profiles', ProfileViewSet)
-router.register(r'students', StudentViewSet)
+router.register(r'students', StudentViewSet, basename='student')
 router.register(r'hostels', HostelViewSet)
 router.register(r'levels', LevelViewSet)
 router.register(r'rooms', RoomViewSet)
