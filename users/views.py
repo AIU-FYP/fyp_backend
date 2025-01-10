@@ -10,13 +10,13 @@ from .serializers import ChangePasswordSerializer
 
 
 class UserViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
     queryset = User.objects.all()
     serializer_class = UserSerializer
 
     @action(
         detail=False,
         methods=['get'],
-        permission_classes=[IsAuthenticated],
         url_path='me'
     )
     def me(self, request):

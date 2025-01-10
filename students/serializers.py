@@ -16,7 +16,6 @@ class StudentSerializer(serializers.ModelSerializer):
     hostel_id = serializers.IntegerField(source='bed.room.level.hostel.id', read_only=True)
     hostel_name = serializers.CharField(source='bed.room.level.hostel.name', read_only=True)
 
-    # Add bed as a writable field
     bed = serializers.PrimaryKeyRelatedField(
         queryset=Bed.objects.all(),
         required=False,
@@ -56,9 +55,20 @@ class StudentSerializer(serializers.ModelSerializer):
             if value.current_status != 'available':
                 raise serializers.ValidationError("This bed is not available")
 
+            # Get gender from initial data for creation or instance for updates
+            student_gender = self.initial_data.get('gender') if not self.instance else self.instance.gender
+
             # Check if gender matches hostel gender
-            if value.room.level.hostel.gender != self.instance.gender:
+            if value.room.level.hostel.gender != student_gender:
                 raise serializers.ValidationError(
                     "Student gender doesn't match hostel gender"
                 )
         return value
+
+    def validate(self, attrs):
+        # Remove unnecessary fields that might come from frontend
+        attrs.pop('block_name', None)
+        attrs.pop('level_number', None)
+        attrs.pop('room', None)
+        attrs.pop('Date', None)
+        return attrs
