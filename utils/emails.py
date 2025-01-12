@@ -4,6 +4,7 @@ from sendgrid.helpers.mail import Mail
 
 
 def send_email(to_email, subject, content):
+    print('hey')
     message = Mail(
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=to_email,
@@ -14,13 +15,13 @@ def send_email(to_email, subject, content):
     try:
         sg = SendGridAPIClient(settings.SENDGRID_API_KEY)
         response = sg.send(message)
+        print(response)
         return response
     except Exception as e:
         print(str(e))
         return None
 
 
-# Email templates
 def send_change_room_request_created(request, student_email, staff_email):
     student_subject = "Change Room Request Submitted"
     student_content = f"""

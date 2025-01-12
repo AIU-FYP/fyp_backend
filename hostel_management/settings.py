@@ -136,9 +136,9 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SENDGRID_API_KEY = 'your-sendgrid-api-key'
+SENDGRID_API_KEY = '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'
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
-DEFAULT_FROM_EMAIL = 'your-verified-sender@yourdomain.com'
+DEFAULT_FROM_EMAIL = 'adnan.madi@student.aiu.edu.my'
 
 STAFF_EMAIL = 'student_affairs@yourdomain.com'
 PPK_EMAIL = 'ppk@yourdomain.com'
