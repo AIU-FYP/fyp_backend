@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 import os
 from pathlib import Path
 
+import dj_database_url
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -24,13 +26,12 @@ SECRET_KEY = 'django-insecure-eq+9di81u(zos$o_e4(i1_df=ma*2&d%hgvy2biv@dqz$xo046
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'http://fypbackend-production-d0dd.up.railway.app/']
 CORS_ALLOW_ALL_ORIGINS = True
 
-
-# 'http://localhost:3000', 'http://localhost', 'localhost'
-
-# Application definition
+CSRF_TRUSTED_ORIGINS = [
+    'http://fypbackend-production-d0dd.up.railway.app/'
+]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -89,10 +90,10 @@ WSGI_APPLICATION = 'hostel_management.wsgi.application'
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.config(
+        default='sqlite:///db.sqlite3',
+        conn_max_age=600
+    )
 }
 
 # Password validation
