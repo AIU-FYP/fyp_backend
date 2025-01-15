@@ -45,7 +45,6 @@ class MaintenanceRequestViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         request = serializer.save()
-        print(request.email)
         send_maintenance_request_created(
             request,
             request.email,
