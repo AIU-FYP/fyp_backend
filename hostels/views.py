@@ -1,4 +1,6 @@
 from rest_framework import viewsets
+
+from django.apps import apps
 from .models import Hostel, Level, Room, Bed
 from .serializers import HostelSerializer, LevelSerializer, RoomSerializer, BedSerializer
 from django.db import models
@@ -6,6 +8,7 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from students.models import Student
 from requests.models import MaintenanceRequest, ChangeRoomRequest
+
 
 class HostelViewSet(viewsets.ModelViewSet):
     queryset = Hostel.objects.all()
@@ -74,14 +77,41 @@ class HostelViewSet(viewsets.ModelViewSet):
 
         return Response(stats)
 
+
 class LevelViewSet(viewsets.ModelViewSet):
     queryset = Level.objects.all()
     serializer_class = LevelSerializer
+
 
 class RoomViewSet(viewsets.ModelViewSet):
     queryset = Room.objects.all()
     serializer_class = RoomSerializer
 
+
 class BedViewSet(viewsets.ModelViewSet):
     queryset = Bed.objects.all()
     serializer_class = BedSerializer
+
+    def get_queryset(self):
+        return Bed.objects.select_related(
+            'room',
+            'room__level',
+            'room__level__hostel'
+        )
+
+    def partial_update(self, request, *args, **kwargs):
+        bed = self.get_object()
+
+        if request.data.get('status') == 'under_maintenance':
+            Student = apps.get_model('students', 'Student')
+            if Student.objects.filter(bed=bed, status='active').exists():
+                return Response(
+                    {"error": "Cannot set bed to maintenance while occupied by an active student"},
+                    status=400
+                )
+
+        serializer = self.get_serializer(bed, data=request.data, partial=True)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+
+        return Response(serializer.data)

@@ -11,7 +11,8 @@ class SimpleBedSerializer(serializers.ModelSerializer):
 
 
 class BedSerializer(serializers.ModelSerializer):
-    status = serializers.CharField(source='current_status', read_only=True)
+    current_status = serializers.CharField(read_only=True)  # Renamed for clarity
+    status = serializers.CharField(required=False)
     room_id = serializers.IntegerField(source='room.id', read_only=True)
     room_number = serializers.CharField(source='room.number', read_only=True)
     level_id = serializers.IntegerField(source='room.level.id', read_only=True)
@@ -24,6 +25,7 @@ class BedSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'status',
+            'current_status',
             'bed_number',
             'room_id',
             'room_number',
@@ -32,6 +34,14 @@ class BedSerializer(serializers.ModelSerializer):
             'hostel_id',
             'hostel_name',
         ]
+
+    def validate_status(self, value):
+        valid_statuses = ['available', 'under_maintenance']
+        if value not in valid_statuses:
+            raise serializers.ValidationError(
+                f"Invalid status. Must be one of: {', '.join(valid_statuses)}"
+            )
+        return value
 
 
 class RoomSerializer(serializers.ModelSerializer):
