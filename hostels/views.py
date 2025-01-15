@@ -22,6 +22,7 @@ class HostelViewSet(viewsets.ModelViewSet):
         student_stats = Student.objects.aggregate(
             total_male=models.Count('id', filter=models.Q(gender='male')),
             total_female=models.Count('id', filter=models.Q(gender='female')),
+            total_active=models.Count('id', filter=models.Q(status='active')),
         )
 
         # Get room occupancy statistics
@@ -47,7 +48,8 @@ class HostelViewSet(viewsets.ModelViewSet):
             'student_statistics': {
                 'male_students': student_stats['total_male'],
                 'female_students': student_stats['total_female'],
-                'total_students': student_stats['total_male'] + student_stats['total_female']
+                'total_students': student_stats['total_male'] + student_stats['total_female'],
+                'total_active': student_stats['total_active']
             },
             'occupancy_statistics': {
                 'total_capacity': total_capacity,
