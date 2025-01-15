@@ -56,10 +56,10 @@ class MaintenanceRequestViewSet(viewsets.ModelViewSet):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():
-            serializer.save()
+            updated_instance = serializer.save()
             send_maintenance_request_update(
-                request,
-                request.email,
+                updated_instance,
+                updated_instance.email,
                 SA_EMAIL
             )
             return Response(serializer.data)
