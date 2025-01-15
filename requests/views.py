@@ -15,6 +15,7 @@ from utils.emails import (
 SA_EMAIL = settings.STAFF_EMAIL
 PPK_EMAIL = settings.PPK_EMAIL
 
+
 class ChangeRoomRequestViewSet(viewsets.ModelViewSet):
     queryset = ChangeRoomRequest.objects.all()
     serializer_class = ChangeRoomRequestSerializer
@@ -27,12 +28,13 @@ class ChangeRoomRequestViewSet(viewsets.ModelViewSet):
             SA_EMAIL
         )
 
-    def patch(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
+
         if serializer.is_valid():
-            serializer.save()
-            send_change_room_request_update(request, request.email)
+            updated_instance = serializer.save()
+            send_change_room_request_update(updated_instance, updated_instance.email)
             return Response(serializer.data)
         return Response(serializer.errors, status=400)
 
@@ -43,6 +45,7 @@ class MaintenanceRequestViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         request = serializer.save()
+        print(request.email)
         send_maintenance_request_created(
             request,
             request.email,
@@ -50,7 +53,7 @@ class MaintenanceRequestViewSet(viewsets.ModelViewSet):
             PPK_EMAIL
         )
 
-    def patch(self, request, *args, **kwargs):
+    def partial_update(self, request, *args, **kwargs):
         instance = self.get_object()
         serializer = self.get_serializer(instance, data=request.data, partial=True)
         if serializer.is_valid():

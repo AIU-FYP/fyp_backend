@@ -4,7 +4,6 @@ from sendgrid.helpers.mail import Mail
 
 
 def send_email(to_email, subject, content):
-    print('hey')
     message = Mail(
         from_email=settings.DEFAULT_FROM_EMAIL,
         to_emails=to_email,
