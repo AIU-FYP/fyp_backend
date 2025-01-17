@@ -25,7 +25,7 @@ class MaintenanceRequest(models.Model):
     occurrence = models.CharField(max_length=255)
     evidence_photo = models.FileField(upload_to='maintenance_evidence/', default='null')
     explanation = models.TextField()
-    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
 
     def __str__(self):
         return f'Request by {self.student_id}'
