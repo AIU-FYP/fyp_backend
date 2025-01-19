@@ -141,8 +141,8 @@ SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 
 DEFAULT_FROM_EMAIL = 'adnan.madi@student.aiu.edu.my'
-STAFF_EMAIL = 'student_affairs@yourdomain.com'
-PPK_EMAIL = 'ppk@yourdomain.com'
+STAFF_EMAIL = 'sa.helpdesk@student.aiu.edu.my'
+PPK_EMAIL = 'helpdesk@ppksb.com.my'
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
