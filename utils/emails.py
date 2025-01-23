@@ -21,20 +21,15 @@ def send_email(to_email, subject, content):
 
 
 def send_change_room_request_created(request, student_email, staff_email):
-    student_subject = "Change Room Request Submitted"
-    student_content = f"""
-    <h2>Your Change Room Request has been submitted</h2>
-    <p>Request Details:</p>
-    <ul>
-        <li>Room Number: {request.room_number}</li>
-        <li>Reason: {request.reason}</li>
-        <li>Status: {request.status}</li>
-    </ul>
+    student_subject = "Room Change Request Submitted"
+    student_content = """
+    <h2>Room Change Request Acknowledgement</h2>
+    <p>Thank you for your request. We will review it within the next two weeks before proceeding to the approval stage.</p>
     """
 
-    staff_subject = "New Change Room Request"
+    staff_subject = "New Room Change Request"
     staff_content = f"""
-    <h2>New Change Room Request Submitted</h2>
+    <h2>New Room Change Request Submitted</h2>
     <p>Student Details:</p>
     <ul>
         <li>Student ID: {request.student_id}</li>
@@ -49,25 +44,27 @@ def send_change_room_request_created(request, student_email, staff_email):
 
 
 def send_change_room_request_update(request, student_email):
-    subject = "Change Room Request Updated"
-    content = f"""
-    <h2>Your Change Room Request has been updated</h2>
-    <p>New Status: {request.status}</p>
-    """
+    subject = "Room Change Request Update"
+
+    if request.status == 'accepted':
+        content = """
+        <h2>Room Change Request Accepted</h2>
+        <p>Kindly be informed that your request has been accepted. You will be contacted for further steps in the process.</p>
+        """
+    else:
+        content = """
+        <h2>Room Change Request Rejected</h2>
+        <p>Kindly be informed that your request has been rejected as it does not meet the criteria for room changes as outlined in the Student Handbook. Please be reminded that room changes will only be considered under special circumstances and after a thorough investigation by Student Affairs.</p>
+        """
 
     send_email(student_email, subject, content)
 
 
 def send_maintenance_request_created(request, student_email, staff_email, ppk_email):
     student_subject = "Maintenance Request Submitted"
-    student_content = f"""
-    <h2>Your Maintenance Request has been submitted</h2>
-    <p>Request Details:</p>
-    <ul>
-        <li>Room Number: {request.room_number}</li>
-        <li>Issue: {request.issue}</li>
-        <li>Status: {request.status}</li>
-    </ul>
+    student_content = """
+    <h2>Maintenance Report Acknowledgement</h2>
+    <p>Thank you for your maintenance report. We will process your request and update you once the work has been completed.</p>
     """
 
     staff_subject = "New Maintenance Request"
@@ -87,10 +84,10 @@ def send_maintenance_request_created(request, student_email, staff_email, ppk_em
 
 
 def send_maintenance_request_update(request, student_email, staff_email):
-    subject = "Maintenance Request Updated"
-    content = f"""
-    <h2>Maintenance Request Status Updated</h2>
-    <p>New Status: {request.status}</p>
+    subject = "Maintenance Request Update"
+    content = """
+    <h2>Completed Maintenance Report</h2>
+    <p>Kindly be informed that the maintenance work for your room, associated with work order no: TBA, has been completed. We will now proceed with closing the report. Should you require further assistance, please let us know.</p>
     """
 
     send_email(student_email, subject, content)
