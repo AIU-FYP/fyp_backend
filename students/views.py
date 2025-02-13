@@ -20,8 +20,12 @@ class StudentViewSet(viewsets.ModelViewSet):
     def partial_update(self, request, *args, **kwargs):
         student = self.get_object()
 
-        if 'status' in request.data and request.data['status'] != 'active':
-            request.data['bed'] = None
+        if 'status' in request.data:
+            new_status = request.data['status']
+
+            if new_status not in ['active', 'internship']:
+                request.data['bed'] = None
+
 
         serializer = self.get_serializer(
             student,

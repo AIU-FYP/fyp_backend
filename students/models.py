@@ -13,7 +13,8 @@ class Student(models.Model):
         ('active', 'Active'),
         ('inactive', 'Inactive'),
         ('graduated', 'Graduated'),
-        ('terminated', 'Terminated')
+        ('terminated', 'Terminated'),
+         ('internship', 'Internship')
     )
 
     name = models.CharField(max_length=100)
