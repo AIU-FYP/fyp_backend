@@ -5,7 +5,7 @@ from students.models import Student
 class MaintenanceRequest(models.Model):
     STATUS_CHOICES = (
         ('pending', 'Pending'),
-        ('ppk_done', 'PPK Done'),
+        ('completed', 'Completed'),
         ('rejected', 'Rejected'),
     )
 

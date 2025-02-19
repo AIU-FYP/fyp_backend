@@ -14,7 +14,7 @@ class Student(models.Model):
         ('inactive', 'Inactive'),
         ('graduated', 'Graduated'),
         ('terminated', 'Terminated'),
-         ('internship', 'Internship')
+        ('internship', 'Internship')
     )
 
     name = models.CharField(max_length=100)
