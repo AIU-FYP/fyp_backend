@@ -11,6 +11,7 @@ class Student(models.Model):
 
     STATUS_CHOICES = (
         ('active', 'Active'),
+        ('foundation', 'Foundation'),
         ('inactive', 'Inactive'),
         ('graduated', 'Graduated'),
         ('terminated', 'Terminated'),

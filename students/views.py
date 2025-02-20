@@ -23,7 +23,7 @@ class StudentViewSet(viewsets.ModelViewSet):
         if 'status' in request.data:
             new_status = request.data['status']
 
-            if new_status not in ['active', 'internship']:
+            if new_status not in ['active', 'internship','foundation']:
                 request.data['bed'] = None
 
 
