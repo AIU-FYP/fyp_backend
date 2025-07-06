@@ -32,7 +32,7 @@ CORS_ALLOWED_ORIGINS = [
 ]
 
 CSRF_TRUSTED_ORIGINS = [
-    'https://fypbackend-production-d0dd.up.railway.app'
+    'https://https://fypbackend-production-ed18.up.railway.app'
 ]
 
 INSTALLED_APPS = [
