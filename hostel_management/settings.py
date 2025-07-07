@@ -27,7 +27,15 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-eq+9di81u(zos$o_e4(i1_df=ma*2&d%hgvy2biv@dqz$xo046'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# DEBUG = True
+
+DEBUG = os.getenv('DEBUG', 'False') == 'True'  # Set DEBUG=False in production
+
+# Add these security settings
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
+SECURE_SSL_REDIRECT = True
+SESSION_COOKIE_SECURE = True
+CSRF_COOKIE_SECURE = True
 
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
 CORS_ALLOWED_ORIGINS = [
@@ -94,24 +102,39 @@ WSGI_APPLICATION = 'hostel_management.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.postgresql',
-#         'NAME': 'railway',
-#         'USER': 'postgres',
-#         'PASSWORD': 'hvAeOcSbCxfFhgccpwxkGJROlfhXVnVP',
-#         'HOST': 'postgres.railway.internal',
-#         'PORT': '5432',
-#     }
-# }
-
 DATABASES = {
     'default': dj_database_url.config(
         default=os.getenv('DATABASE_URL'),
         conn_max_age=600,
         conn_health_checks=True,
+        ssl_require=True  # Add this for Railway
     )
 }
+
+CORS_ALLOW_ALL_ORIGINS = False  # For production
+CORS_ALLOW_CREDENTIALS = True
+
+# Add these to your existing CORS settings
+CORS_ALLOW_METHODS = [
+    'DELETE',
+    'GET',
+    'OPTIONS',
+    'PATCH',
+    'POST',
+    'PUT',
+]
+
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
 
 # Password validation
 # https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
