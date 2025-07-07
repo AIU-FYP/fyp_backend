@@ -2,38 +2,51 @@ import os
 from pathlib import Path
 from dotenv import load_dotenv
 import dj_database_url
-# Load environment variables from .env file
-load_dotenv()
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+# Define base directory
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-# Quick-start development settings - unsuitable for production
-# See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
+# Load environment variables from .env
+load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-eq+9di81u(zos$o_e4(i1_df=ma*2&d%hgvy2biv@dqz$xo046'
+SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-# DEBUG = True
+DEBUG = os.getenv('DEBUG', 'False') == 'True'
 
-DEBUG = os.getenv('DEBUG', 'False') == 'True'  # Set DEBUG=False in production
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
 
-# Add these security settings
+# CORS and CSRF settings
+CORS_ALLOWED_ORIGINS = [
+    "https://fyp-frontend2-production.up.railway.app"
+]
+CSRF_TRUSTED_ORIGINS = [
+    'https://fypbackend-production-ed18.up.railway.app'
+]
+
+CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_CREDENTIALS = True
+CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
+CORS_ALLOW_HEADERS = [
+    'accept',
+    'accept-encoding',
+    'authorization',
+    'content-type',
+    'dnt',
+    'origin',
+    'user-agent',
+    'x-csrftoken',
+    'x-requested-with',
+]
+
+# Security settings
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 SECURE_SSL_REDIRECT = True
 SESSION_COOKIE_SECURE = True
 CSRF_COOKIE_SECURE = True
 
-ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
-CORS_ALLOWED_ORIGINS = [
-    "https://fyp-frontend2-production.up.railway.app"
-]
-
-CSRF_TRUSTED_ORIGINS = [
-    'https://fypbackend-production-ed18.up.railway.app'
-]
-
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -42,8 +55,11 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 
+    # Third-party apps
     'rest_framework',
     'corsheaders',
+
+    # Your apps
     'users',
     'students',
     'hostels',
@@ -79,55 +95,18 @@ TEMPLATES = [
     },
 ]
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-}
-
 WSGI_APPLICATION = 'hostel_management.wsgi.application'
 
 # Database
-# Load environment variables
-BASE_DIR = Path(__file__).resolve().parent.parent
-load_dotenv(os.path.join(BASE_DIR, '.env'))
-
 DATABASES = {
     'default': dj_database_url.config(
-        default=os.getenv('DATABASE_URL'),
+        default=os.getenv("DATABASE_URL"),
         conn_max_age=600,
         ssl_require=True
     )
 }
 
-CORS_ALLOW_ALL_ORIGINS = False  # For production
-CORS_ALLOW_CREDENTIALS = True
-
-# Add these to your existing CORS settings
-CORS_ALLOW_METHODS = [
-    'DELETE',
-    'GET',
-    'OPTIONS',
-    'PATCH',
-    'POST',
-    'PUT',
-]
-
-CORS_ALLOW_HEADERS = [
-    'accept',
-    'accept-encoding',
-    'authorization',
-    'content-type',
-    'dnt',
-    'origin',
-    'user-agent',
-    'x-csrftoken',
-    'x-requested-with',
-]
-
 # Password validation
-# https://docs.djangoproject.com/en/5.1/ref/settings/#auth-password-validators
-
 AUTH_PASSWORD_VALIDATORS = [
     {
         'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
@@ -143,37 +122,35 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
+# REST Framework (JWT Auth)
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
+}
+
 # Internationalization
-# https://docs.djangoproject.com/en/5.1/topics/i18n/
-
 LANGUAGE_CODE = 'en-us'
-
 TIME_ZONE = 'UTC'
-
 USE_I18N = True
-
 USE_TZ = True
 
-AUTH_USER_MODEL = 'users.User'
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/5.1/howto/static-files/
-
-STATIC_URL = 'static/'
+# Static and media files
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
-# Media files
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
+# Email configuration (SendGrid example)
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
-
+SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = 'adnan.madi@student.aiu.edu.my'
 STAFF_EMAIL = 'sa.helpdesk@student.aiu.edu.my'
 PPK_EMAIL = 'helpdesk@ppksb.com.my'
 
-# Default primary key field type
-# https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
+# User model
+AUTH_USER_MODEL = 'users.User'
 
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
