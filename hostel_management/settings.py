@@ -12,8 +12,6 @@ load_dotenv(os.path.join(BASE_DIR, '.env'))
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
-DEBUG = 'True'
-
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
 
 # CORS and CSRF settings
@@ -40,10 +38,10 @@ CORS_ALLOW_HEADERS = [
 ]
 
 # Security settings
-SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-SECURE_SSL_REDIRECT = True
-SESSION_COOKIE_SECURE = True
-CSRF_COOKIE_SECURE = True
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+DEBUG = True
 
 # Application definition
 INSTALLED_APPS = [
