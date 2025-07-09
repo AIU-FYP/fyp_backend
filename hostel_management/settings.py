@@ -16,6 +16,10 @@ ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railwa
 
 # CORS and CSRF settings
 CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",
+    "http://127.0.0.1:3000",
+    "http://localhost:3001",
+    "http://127.0.0.1:3001",
     "https://fyp-frontend2-production.up.railway.app"
 ]
 CSRF_TRUSTED_ORIGINS = [
