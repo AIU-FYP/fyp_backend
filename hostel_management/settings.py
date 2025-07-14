@@ -32,6 +32,7 @@ SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
 
 # CORS and CSRF settings
+
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://127.0.0.1:3000",
@@ -39,12 +40,12 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:3001",
     "https://fyp-frontend2-production.up.railway.app"
 ]
-CSRF_TRUSTED_ORIGINS = [
-    'https://fypbackend-production-ed18.up.railway.app'
-]
 
 CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
+
+
+
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
 CORS_ALLOW_HEADERS = [
     'accept',
