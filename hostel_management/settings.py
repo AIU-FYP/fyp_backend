@@ -41,7 +41,7 @@ CORS_ALLOWED_ORIGINS = [
     "https://fyp-frontend2-production.up.railway.app"
 ]
 
-CORS_ALLOW_ALL_ORIGINS = False
+CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
 
 
