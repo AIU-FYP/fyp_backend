@@ -9,51 +9,22 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Load environment variables from .env
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
-# Detect environment
-ENVIRONMENT = os.getenv('ENVIRONMENT', 'development')
-
-# Database settings
-if ENVIRONMENT == 'production':
-    DATABASE_URL = os.getenv('PROD_DATABASE_URL')
-    DATABASES = {
-        'default': dj_database_url.parse(DATABASE_URL, conn_max_age=600)
-    }
-else:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-
-# Secret Key
+# SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = os.getenv('SECRET_KEY', 'fallback-secret-key')
 
-# Hosts
-ALLOWED_HOSTS = [
-    'localhost',
-    '127.0.0.1',
-    'fypbackend-production-ed18.up.railway.app'
-]
+ALLOWED_HOSTS = ['localhost', '127.0.0.1', 'fypbackend-production-ed18.up.railway.app']
 
-# CSRF Settings
-CSRF_TRUSTED_ORIGINS = [
-    'https://fypbackend-production-ed18.up.railway.app',
-]
-
-# CORS Settings (Frontend Origins Only)
+# CORS and CSRF settings
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",
-    "http://127.0.0.1:3000",
-    "http://localhost:3001",
-    "http://127.0.0.1:3001",
     "https://fyp-frontend2-production.up.railway.app"
 ]
+CSRF_TRUSTED_ORIGINS = [
+    'https://fypbackend-production-ed18.up.railway.app'
+]
 
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-
 CORS_ALLOW_METHODS = ['DELETE', 'GET', 'OPTIONS', 'PATCH', 'POST', 'PUT']
-
 CORS_ALLOW_HEADERS = [
     'accept',
     'accept-encoding',
@@ -66,19 +37,13 @@ CORS_ALLOW_HEADERS = [
     'x-requested-with',
 ]
 
-# Security Settings Based on Environment
-if ENVIRONMENT == 'production':
-    DEBUG = False
-    SECURE_SSL_REDIRECT = True
-    SESSION_COOKIE_SECURE = True
-    CSRF_COOKIE_SECURE = True
-else:
-    DEBUG = True
-    SECURE_SSL_REDIRECT = False
-    SESSION_COOKIE_SECURE = False
-    CSRF_COOKIE_SECURE = False
+# Security settings
+SECURE_SSL_REDIRECT = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_SECURE = False
+DEBUG = True
 
-# Applications
+# Application definition
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,15 +94,29 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'hostel_management.wsgi.application'
 
+# Database
+DATABASES = {
+    'default': dj_database_url.config(conn_max_age=600)
+}
+
+
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
-    {'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator'},
-    {'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator'},
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
 ]
 
-# REST Framework
+# REST Framework (JWT Auth)
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -150,22 +129,22 @@ TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_TZ = True
 
-# Static and Media Files
+# Static and media files
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
-# Email Configuration
+# Email configuration (SendGrid example)
 EMAIL_BACKEND = 'sendgrid_backend.SendgridBackend'
 SENDGRID_API_KEY = os.getenv('SENDGRID_API_KEY')
 DEFAULT_FROM_EMAIL = 'adnan.madi@student.aiu.edu.my'
 STAFF_EMAIL = 'sa.helpdesk@student.aiu.edu.my'
 PPK_EMAIL = 'helpdesk@ppksb.com.my'
 
-# Custom User Model
+# User model
 AUTH_USER_MODEL = 'users.User'
 
-# Default Primary Key Field Type
+# Default primary key field type
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
