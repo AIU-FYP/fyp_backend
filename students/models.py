@@ -1,7 +1,6 @@
 from django.db import models
 
-from hostels.models import Room, Bed
-
+from hostels.models import Hostel, Level, Room, Bed
 
 class Student(models.Model):
     GENDER_CHOICES = (
@@ -20,7 +19,7 @@ class Student(models.Model):
 
     name = models.CharField(max_length=100)
     student_id = models.CharField(max_length=20, unique=True)
-    passport = models.CharField(max_length= 50, default = '')
+    passport = models.CharField(max_length=50, default='')
     arrival_date = models.DateField()
     phone = models.CharField(max_length=15)
     email = models.EmailField(unique=True)
@@ -28,8 +27,12 @@ class Student(models.Model):
     religion = models.CharField(max_length=50)
     nationality = models.CharField(max_length=50)
     major = models.CharField(max_length=100)
-    bed = models.ForeignKey(Bed, on_delete=models.CASCADE, null=True, blank=True)
-    status = models.CharField( max_length=20, choices=STATUS_CHOICES, default='active')
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='active')
+
+    hostel = models.ForeignKey(Hostel, on_delete=models.SET_NULL, null=True, blank=True)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True, blank=True)
+    room = models.ForeignKey(Room, on_delete=models.SET_NULL, null=True, blank=True)
+    bed = models.ForeignKey(Bed, on_delete=models.SET_NULL, null=True, blank=True)
 
     def __str__(self):
         return self.name
